@@ -56,12 +56,15 @@
   (let ((buffer (current-buffer)))
     (irony-diagnostics--async
      #'(lambda () ;; closure, lexically bound
-         (let ((errors (mapcar
+         (let* ((diag (irony-diagnostics))
+                (errors (mapcar
                         #'(lambda (diagnostic)
                             (flycheck-irony--build-error checker buffer
                                                          diagnostic))
-                        (irony-diagnostics))))
-           (funcall callback 'finished (delq nil errors)))))))
+                        diag)))
+           (if diag
+               (funcall callback 'finished (delq nil errors))
+             (funcall callback 'interrupted nil)))))))
 
 (defun flycheck-irony--verify (checker)
   "Verify the Flycheck Irony syntax checker."
