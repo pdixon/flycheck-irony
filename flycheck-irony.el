@@ -82,7 +82,11 @@
      (flycheck-verification-result-new
       :label "irony-server"
       :message (if server-found (format "Found at %s" server-path) "Not found")
-      :face (if server-found 'success '(bold error))))))
+      :face (if server-found 'success '(bold error))))
+   (flycheck-verification-result-new
+    :label "compile options"
+    :message (format "compile options %s" irony--compile-options)
+    :face 'success)))
 
 (flycheck-define-generic-checker 'irony
   "A syntax checker for C, C++ and Objective-C, using Irony Mode."
